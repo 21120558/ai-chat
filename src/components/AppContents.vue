@@ -12,6 +12,11 @@
   import {useAppStore} from '@/stores/app.store';
   import axios from 'axios';
 
+  const apiClient = axios.create({
+    timeout: 1000000,  
+});
+  const BASEURL = 'http://localhost:5000';
+
   const input = ref('');
   const numOfInputRows = ref(1);
   const inputTextarea = ref<HTMLTextAreaElement|null>(null);
@@ -81,7 +86,7 @@
       //   temperature: 0.4,
       //   max_tokens: 2025
       // });
-      const completion = await axios.post('http://localhost:5000/generate', {
+      const completion = await apiClient.post(`${BASEURL}/generate`, {
         messages: [{
           role: 'user',
           content: `Summarize the input as title of no more than 5 words. Output only the summarized title. The input is: ${message}`
@@ -112,7 +117,7 @@
       //   await chatStore.updateLastMessageStream(chunk.choices[0]?.delta?.content || '');
       //   autoScrollDown();
       // }
-      const res = await axios.post('http://localhost:5000/generate', {
+      const res = await apiClient.post(`${BASEURL}/generate`, {
         messages: chatStore.currentChat.messages,
         // model: settingsStore.model,
         // temperature: +settingsStore.temp,
@@ -161,6 +166,7 @@
       <template v-if="chatStore.currentChat">
         <template v-for="(message, index) in chatStore.currentChat.messages" :key="index">
           <template v-if="message.content && message.role === Role.user">
+            <div>bạn</div>
             <div class="flex">
               <div class="border-green-600 border-2 border-solid py-2 px-3 rounded mb-4 message-content" v-html="md.render(message.content)"/>
             </div>
