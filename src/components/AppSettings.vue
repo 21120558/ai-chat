@@ -60,7 +60,7 @@
     </template>
     <template #body>
       <!-- <div class="mb-3"><fwb-input v-model="form.openaiApiKey" label="API key" type="password" /></div> -->
-      <div class="mb-3"><fwb-select v-model="form.model" label="Model" placeholder="Select one" :options="models" /></div>
+      <!-- <div class="mb-3"><fwb-select v-model="form.model" label="Model" placeholder="Select one" :options="models" /></div> -->
       <!-- <div class="mb-3"><fwb-input v-model="form.openaiMaxTokens" label="Max tokens" type="number"  /></div> -->
       <div><fwb-input v-model="form.temp" label="Temperature" type="number" step="0.1"  /></div>
     </template>

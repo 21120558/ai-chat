@@ -11,6 +11,7 @@
   import {FwbAlert, FwbButton, FwbSpinner} from 'flowbite-vue';
   import {useAppStore} from '@/stores/app.store';
   import axios from 'axios';
+  import { PREVIEW_CHAT } from '@/constants/text.ts'
 
   const apiClient = axios.create({
     timeout: 1000000,  
@@ -193,7 +194,7 @@
                 :disabled="!isInputEnabled"/> -->
       <textarea class="p-2 overflow-x-hidden  w-full text-gray-900 bg-gray-50 rounded border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 :rows="numOfInputRows"
-                :placeholder="pending ? 'Answering...' : `Chat with PrivateGPT`"
+                :placeholder="pending ? 'Answering...' : PREVIEW_CHAT"
                 ref="inputTextarea"
                 v-model="input"
                 @keydown.ctrl.enter="onSend"/>

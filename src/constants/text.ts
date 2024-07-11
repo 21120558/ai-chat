@@ -1,0 +1,1 @@
+export const PREVIEW_CHAT = 'Chat with PrivateGPT...';
