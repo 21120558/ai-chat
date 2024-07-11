@@ -43,18 +43,20 @@
     }
   });
 
-  const isInputEnabled = computed(() => settingsStore.apiKey.length > 0 && !pending.value);
-  const isSendBtnEnabled = computed(() => input.value?.trim().length > 0 && settingsStore.apiKey.trim().length > 0);
+  // const isInputEnabled = computed(() => settingsStore.apiKey.length > 0 && !pending.value);
+  // const isSendBtnEnabled = computed(() => input.value?.trim().length > 0 && settingsStore.apiKey.trim().length > 0);
+
+  const isSendBtnEnabled = computed(() => input.value?.trim().length > 0);
 
 
   onMounted(() => {
     setTimeout(() => inputTextarea.value?.focus(), 100);
   });
 
-  const openai = new OpenAI({
-    apiKey: settingsStore.apiKey,
-    dangerouslyAllowBrowser: true
-  });
+  // const openai = new OpenAI({
+  //   apiKey: settingsStore.apiKey,
+  //   dangerouslyAllowBrowser: true
+  // });
 
   async function onSend() {
     pending.value = true;
@@ -119,8 +121,8 @@
       // }
       const res = await apiClient.post(`${BASEURL}/generate`, {
         messages: chatStore.currentChat.messages,
-        // model: settingsStore.model,
-        // temperature: +settingsStore.temp,
+        model: settingsStore.model,
+        temperature: +settingsStore.temp,
         // max_tokens: +settingsStore.maxTokens
       }, {
         headers: {
@@ -166,10 +168,12 @@
       <template v-if="chatStore.currentChat">
         <template v-for="(message, index) in chatStore.currentChat.messages" :key="index">
           <template v-if="message.content && message.role === Role.user">
-            <div>bạn</div>
+          <div class="message">
+            <div class="username">You</div>
             <div class="flex">
               <div class="border-green-600 border-2 border-solid py-2 px-3 rounded mb-4 message-content" v-html="md.render(message.content)"/>
             </div>
+          </div>
           </template>
           <template v-if="message.content && message.role === Role.assistant">
             <div class="flex">
@@ -180,13 +184,19 @@
       </template>
     </main>
     <div class="flex w-full p-4" @focusin="numOfInputRows = 5" @focusout="numOfInputRows = 1">
-      <textarea class="p-2 overflow-x-hidden  w-full text-gray-900 bg-gray-50 rounded border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      <!-- <textarea class="p-2 overflow-x-hidden  w-full text-gray-900 bg-gray-50 rounded border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 :rows="numOfInputRows"
                 :placeholder="pending ? 'Answering...' : (settingsStore.apiKey.length === 0 ? 'Enter your API key in settings' : `Chat with ${settingsStore.model}...`)"
                 ref="inputTextarea"
                 v-model="input"
                 @keydown.ctrl.enter="onSend"
-                :disabled="!isInputEnabled"/>
+                :disabled="!isInputEnabled"/> -->
+      <textarea class="p-2 overflow-x-hidden  w-full text-gray-900 bg-gray-50 rounded border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                :rows="numOfInputRows"
+                :placeholder="pending ? 'Answering...' : `Chat with PrivateGPT`"
+                ref="inputTextarea"
+                v-model="input"
+                @keydown.ctrl.enter="onSend"/>
       <fwb-button color="default"
                   @click="onSend"
                   :disabled="!isSendBtnEnabled"
@@ -200,6 +210,13 @@
 
 <style>
   @import '../../node_modules/highlight.js/styles/github.css';
+
+  .username {
+    padding-left: 6px;
+    padding-bottom: 3px;
+    font-size: 14px;
+    font-weight: medium;
+  }
 
   .message-content {
     pre:not(:last-child),

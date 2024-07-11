@@ -4,13 +4,13 @@ import {db} from '@/db';
 import type {Settings} from '@/models/settings.model';
 
 export const useSettingsStore = defineStore('settings', () => {
-  const DEFAULT_OPENAI_TEMP = '0.7';
-  const DEFAULT_OPENAI_MODEL = 'gpt-3.5-turbo';
+  const DEFAULT_TEMP = '0.7';
+  const DEFAULT_MODEL = 'llama3';
   const DEFAILT_OPENAI_MAX_TOKENS = '2025';
 
   const areSettingsVisible = ref(false);
 
-  const apiKey = ref<string>('');
+  // const apiKey = ref<string>('');
   const temp = ref<string>('');
   const model = ref<string>('');
   const maxTokens = ref<string>('');
@@ -32,17 +32,17 @@ export const useSettingsStore = defineStore('settings', () => {
           throw new Error('Endless loop while creating settings DB');
         }
         await db.settings.add({
-          openaiApiKey: '',
-          openaiTemp: DEFAULT_OPENAI_TEMP,
-          openaiModel: DEFAULT_OPENAI_MODEL,
+          // openaiApiKey: '',
+          temp: DEFAULT_TEMP,
+          model: DEFAULT_MODEL,
           openaiMaxTokens: DEFAILT_OPENAI_MAX_TOKENS
         });
         i++;
         await reloadSettings(i);
       } else {
-        apiKey.value = settings.openaiApiKey;
-        temp.value = settings.openaiTemp;
-        model.value = settings.openaiModel;
+        // apiKey.value = settings.openaiApiKey;
+        temp.value = settings.temp;
+        model.value = settings.model;
         maxTokens.value = settings.openaiMaxTokens;
         dbReloadCount.value++;
       }
@@ -54,9 +54,9 @@ export const useSettingsStore = defineStore('settings', () => {
   async function updateSettings(form: Settings) {
     try {
       await db.settings.update(1, {
-        openaiApiKey: form.openaiApiKey,
-        openaiTemp: form.openaiTemp,
-        openaiModel: form.openaiModel,
+        // openaiApiKey: form.openaiApiKey,
+        temp: form.temp,
+        model: form.model,
         openaiMaxTokens: form.openaiMaxTokens
       });
     } catch (e) {
@@ -72,7 +72,7 @@ export const useSettingsStore = defineStore('settings', () => {
 
   return {
     areSettingsVisible,
-    apiKey,
+    // apiKey,
     temp,
     model,
     maxTokens,

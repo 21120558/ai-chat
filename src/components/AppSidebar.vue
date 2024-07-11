@@ -14,7 +14,7 @@
 </script>
 
 <template>
-  <div class="p-4 bg-gray-100 w-64 flex flex-col text-gray-500" v-if="appStore.isSidebarVisible">
+  <div class="p-4 bg-gray-200 w-64 flex flex-col text-gray-500" v-if="appStore.isSidebarVisible">
     <ul class="overflow-auto">
       <li class="mb-2">
         <a href="#" class="hover:text-blue-600 font-bold" @click="chatStore.setCurrentChatId(null)">New chat</a>
